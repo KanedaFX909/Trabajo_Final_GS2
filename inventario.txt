@@ -1,0 +1,3 @@
+Marca	Modelo	Color	Año	km	Fecha
+bmw	m5	55	2006	22	2022-10-24
+jeep	kk	perla	2030	90000	2022-10-24
