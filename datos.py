@@ -2,7 +2,7 @@ from Autos import Auto
 from Autos import Inventario
 import datetime
 
-#Persistencia de Datos
+#Persistencia de Datos (Revisar no funciona)
 class Notes:
     def __init__(self, archivo = "autos.txt"):
         self.archivo = archivo

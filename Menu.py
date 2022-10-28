@@ -14,7 +14,8 @@ while True:
     print('6 - Salir del Sistema')
 
     userInput=input('Elija una opción: ') 
-    #Agregar 
+    #Agregar cambiar testo y que llame a self.agregar auto
+    #agregar inputs
     if userInput=="1": 
         inventory.agregar_auto()
     #Borrar
