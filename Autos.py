@@ -2,49 +2,37 @@ import datetime
 
 print('Sistema de Gestión Autos')
 class Auto:
-    def __init__(self):
-        self.marca = ''
-        self.model = ''
-        self.color = ''
-        self.año = 0
-        self.km = 0
+    def __init__(self,marca,modelo,color,año,km):
+        self.marca = marca
+        self.modelo = modelo
+        self.color = color
+        self.año = año
+        self.km = km
         self.fecha_creacion = datetime.date.today()
-    
-    #Función agregar autos, solicita inputs, solo se aceptan nros en AÑO Y KM
-    def agregar_auto(self):
-        try:
-            self.marca = input('Marca: ')
-            self.model = input('Modelo: ')
-            self.color = input('Color: ')
-            self.año = int(input('Año: '))
-            self.km = int(input('km: '))
-            return True
-        except ValueError:
-            print('Ingrese solo numeros en "Año" y "km"')
-            return False
 
     def __str__(self):
         #esta funcion convierte en str todos los elementos de la lista
-        return '\t'.join(str(x) for x in [self.marca, self.model, self.color, self.año, self.km, self.fecha_creacion ])
+        return '\t'.join(str(x) for x in [self.marca, self.modelo, self.color, self.año, self.km, self.fecha_creacion ])
 
-  
 
 class Inventario:
     #Guardo los autos en esta lista vacia
     def __init__(self):
         self.vehiculos = []
         with open("inventario.txt", 'r') as fp:
+            linea = 0
             for auto_como_texto in fp:
-                n = self.texto_auto(auto_como_texto)
-                self.vehiculos.append(n)
+                linea = linea + 1
+                if linea > 1:
+                    n = self.texto_auto(auto_como_texto)
+                    self.vehiculos.append(n)
     
     #Llamo a la funcion agregar auto, ingresa a la lista y emite mensaje
-    def agregar_auto(self):
-        vehiculo = Auto()
-        if vehiculo.agregar_auto() == True:
-            self.vehiculos.append(vehiculo)
-            print ()
-            print("El auto se agrego a la lista")
+    def agregar_auto(self,marca,modelo,color,año,km):
+        vehiculo = Auto(marca,modelo,color,año,km)
+        self.vehiculos.append(vehiculo)
+        print ()
+        print("El auto se agrego a la lista")
     
     #Funcion para visualizar el inventario       
     def viewInventory(self):

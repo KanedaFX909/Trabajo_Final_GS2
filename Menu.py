@@ -11,13 +11,23 @@ while True:
     print('3 - Visualizar Inventario')
     print('4 - Editar Auto en Inventario')
     print('5 - Exportar Datos')
-    print('6 - Salir del Sistema')
+    print('6 - Mostrar total de autos en inventario')
+    print('7 - Salir del Sistema')
 
     userInput=input('Elija una opción: ') 
     #Agregar cambiar testo y que llame a self.agregar auto
     #agregar inputs
-    if userInput=="1": 
-        inventory.agregar_auto()
+    if userInput=="1":
+        try:
+            marca = input('Marca: ')
+            modelo = input('Modelo: ')
+            color = input('Color: ')
+            año = int(input('Año: '))
+            km = int(input('km: '))
+            inventory.agregar_auto(marca,modelo,color,año,km)
+        except ValueError:
+            print('Ingrese solo numeros en "Año" y "km"')
+        
     #Borrar
     elif userInput=='2':
         if len(inventory.vehiculos) < 1:
@@ -47,12 +57,33 @@ while True:
         if item - 1  > len(inventory.vehiculos):
             print('El numero no existe')
         else:
-            automobil = Auto()
-            if automobil.agregar_auto() == True :
-                inventory.vehiculos.remove(inventory.vehiculos[item - 1])
-                inventory.vehiculos.insert(item - 1, automobil)
+            #antes 
+            automobil = inventory.vehiculos[item-1]
+            if automobil:
+                # inventory.vehiculos.remove(inventory.vehiculos[item - 1])
+                # inventory.vehiculos.insert(item - 1, automobil)
+                print("Elija dato a editar:")
+                print("1: Marca")
+                print("2: Modelo")
+                print("3: Color")
+                print("4: Año")
+                print("5: km")
+                
+                opcion = input("Elija opción: ")
+                if opcion == "1":
+                    automobil.marca = input("Ingrese la nueva Marca: ")
+                elif opcion == "2":
+                    automobil.modelo = input("Ingrese el nuevo Modelo ")
+                elif opcion == "3":
+                    automobil.color = input("Ingrese el nuevo Color ")
+                elif opcion == "4":
+                    automobil.año = input("Ingrese el nuevo Año ")
+                elif opcion == "5":
+                    automobil.km = input("Ingrese el nuevo KM ")
                 print ()
                 print('Se actualizo el dato')
+                
+                
     #Exportar txt
     elif userInput == '5':
         if len(inventory.vehiculos) < 1:
@@ -65,11 +96,18 @@ while True:
             f.write('%s\n' %vehiculo)
         f.close()
         print('Se exporto la lista en archivo txt')
-    #Salir
+        
     elif userInput == '6':
-        print('Cerrando sistema')
+    #mostrar sumatoria del total item
+        len(inventory.vehiculos)
+        cantidad = len(inventory.vehiculos)
+        print(cantidad)
+    
+    #Salir
+    elif userInput == '7':
+        print('Cerrando sistema...')
         break
-    #Input ivalido
+    #Input invalido
     else:
         print('La opción no es valida, ingrese nuevamente.')
 
