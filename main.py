@@ -4,19 +4,19 @@ from tkinter import DISABLED, END, NORMAL, Text
 from models.Inventory import Inventory
 from models.CarStorage import CarStorage
 from models.Car import Car
-
+#------------------------------------------------------------------------------------------------------
 APPEARANCE_MODE = "System"
 DEFAULT_COLOR_THEME = "dark-blue"
 DB_FILENAME = "database/database.txt"
 
 customtkinter.set_appearance_mode(APPEARANCE_MODE)  
 customtkinter.set_default_color_theme(DEFAULT_COLOR_THEME) 
-
+# --------------------------------------------------------------------------------------------------
 class App(customtkinter.CTk):
     WIDTH = 1080
     HEIGHT = 500
     TEXT = ("Roboto Medium", -16)
-
+    
     def __init__(self):
         super().__init__()
         
@@ -25,7 +25,7 @@ class App(customtkinter.CTk):
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
         self.protocol("WM_DELETE_WINDOW", self.on_closing) 
 
-        # ---- Create two frames ----
+        # ---- Se crean 2 frames ----
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
         
@@ -101,11 +101,13 @@ class App(customtkinter.CTk):
             padx=20, 
             sticky="w"
         )
-        # ---- Inventory and Storage management ----
+        # ---- Inventory & Storage ----
         self.__storage = CarStorage(DB_FILENAME)
         self.__inventory = Inventory(self.__storage.read())
 
-    # ---- Methods for buttons ----
+### Comando de botones --------------------------------------------------------------------------------
+
+    ## Función Agregar -------------------------------------------------------------------
     def add_car(self):
         def get_label(name):
             return customtkinter.CTkLabel(
@@ -158,7 +160,7 @@ class App(customtkinter.CTk):
             del car
 
 
-        # Create frame
+        # Se crea el Frame
 
         self.add_car_frame = customtkinter.CTkFrame(master=self)                        
         self.add_car_frame.grid(
@@ -187,14 +189,14 @@ class App(customtkinter.CTk):
                 pady=15               
             )
 
-        # Add Car Button
+        # Boton Agregar Auto
         customtkinter.CTkButton(
             master=self.add_car_frame, 
             text="Agregar Auto", 
             command=add_car_action
         ).grid(row=6, column=1, pady=15, padx=0)
 
-
+    ## Función Eliminar -------------------------------------------------------------------
     def remove_car(self):
         def delete_car_action():
             if not car_id_entry.get():
@@ -270,7 +272,7 @@ class App(customtkinter.CTk):
             command=delete_car_action
         ).grid(row=0, column=2, pady=15, padx=0)
 
-
+    ## Función Editar ---------------------------------------------------------------------
     def edit_car(self):
 
         # Create frame
@@ -278,7 +280,7 @@ class App(customtkinter.CTk):
         self.edit_frame = customtkinter.CTkFrame(master=self)                       
         self.edit_frame.grid(row=0, column=1, sticky="nswe", padx=30, pady=30)  
 
-
+    ## Función Reporte ---------------------------------------------------------------------
     def report(self):
 
         # Create frame
@@ -317,10 +319,7 @@ class App(customtkinter.CTk):
             text_font=("Roboto Medium", 12)
         ).grid(column=1, row=15, padx=0, pady=15)
 
-
-    # ---- Others ----
-
-
+    ## Función Cerrar ---------------------------------------------------------------------
     def on_closing(self, event=0):
     
         car_list = Inventory.convert_to_save_literal(
@@ -329,11 +328,11 @@ class App(customtkinter.CTk):
         self.__storage.write(car_list)
         self.destroy()
 
-
+    ## Función Cambiar Modo ---------------------------------------------------------------------
     def change_appearance_mode(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
-
-
+        
+#------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     app = App()
     app.mainloop()
