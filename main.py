@@ -17,6 +17,7 @@ class App(customtkinter.CTk):
     HEIGHT = 500
     TEXT = ("Roboto Medium", -16)
     
+    
     def __init__(self):
         super().__init__()
         
@@ -39,7 +40,7 @@ class App(customtkinter.CTk):
         self.frame_right = customtkinter.CTkFrame(master=self)
         self.frame_right.grid(row=0, column=1, sticky="nswe", padx=20, pady=20)
 
-        # ---- For frame left ----
+        # ---- Frame left ----
         self.frame_left.grid_rowconfigure(0, minsize=10)   
         self.frame_left.grid_rowconfigure(6, weight=1)  
         self.frame_left.grid_rowconfigure(8, minsize=20)   
@@ -53,7 +54,20 @@ class App(customtkinter.CTk):
         )
         self.title.grid(row=1, column=0, pady=10, padx=10)
 
-        # ---- Buttons for frame left ----
+
+        ### Comando de Botones --------------------------------------------------------------------------------
+        
+        # Pantalla Inicio (Boton Menu) -----------------------------------------------------------------------
+        self.show_car_button = customtkinter.CTkButton(
+            master=self.frame_left, 
+            text="Inicio", 
+            text_font=App.TEXT, 
+            command=self.show_car #show car OJOOOOOOOOOOOOOOOOOOOOOOOO
+        )
+        self.show_car_button.grid(row=2, column=0, pady=10, padx=20)
+        
+        
+        # Agregar -----------------------------------------------------------------------
         self.add_car_button = customtkinter.CTkButton(
             master=self.frame_left, 
             text="Agregar Auto", 
@@ -61,7 +75,7 @@ class App(customtkinter.CTk):
             command=self.add_car
         )
         self.add_car_button.grid(row=3, column=0, pady=10, padx=20)
-
+        # Borrar -----------------------------------------------------------------------
         self.borrar_button = customtkinter.CTkButton(
             master=self.frame_left, 
             text="Borrar Auto", 
@@ -69,7 +83,7 @@ class App(customtkinter.CTk):
             command=self.remove_car
         )
         self.borrar_button.grid(row=4, column=0, pady=10, padx=20)
-
+        # Editar -----------------------------------------------------------------------
         self.editar_button = customtkinter.CTkButton(
             master=self.frame_left, 
             text="Editar Datos", 
@@ -77,7 +91,7 @@ class App(customtkinter.CTk):
             command=self.edit_car
         )
         self.editar_button.grid(row=5, column=0, pady=10, padx=20)
-
+        # Visualización Totales -----------------------------------------------------------------------
         self.reporting_button = customtkinter.CTkButton(
             master=self.frame_left, 
             text="Reporte total", 
@@ -87,7 +101,7 @@ class App(customtkinter.CTk):
         self.reporting_button.grid(row=7, column=0, pady=10, padx=20)
 
 
-        # ---- Other buttons ----
+        # Modo -----------------------------------------------------------------------
         self.color_mode_toggle = customtkinter.CTkOptionMenu(
             master=self.frame_left, 
             values=["Light", "Dark", "System"], 
@@ -105,8 +119,106 @@ class App(customtkinter.CTk):
         self.__storage = CarStorage(DB_FILENAME)
         self.__inventory = Inventory(self.__storage.read())
 
-### Comando de botones --------------------------------------------------------------------------------
+    #Visualización de los datos en Pantalla Inicial
+        # Create frame
+        self.delete_frame = customtkinter.CTkFrame(master=self)                       
+        self.delete_frame.grid(row=0, column=1, sticky="nswe", padx=30, pady=30)       
+        
+        # Display inventory output indexed
+        inventory_output = Text(
+            self.delete_frame, 
+            font=App.TEXT, 
+            width=70, 
+            height=16, 
+            bg='#363636',
+            fg='white', 
+            spacing3=10
+        )
+        inventory_output.grid(row=5, column=1, columnspan=2, padx=0, pady=15)
+        inventory_output.insert(
+            0.0, 
+            Inventory.convert_to_literal_indexed(
+                self.__inventory.get_vehicles()
+            )
+        )
+        inventory_output.config(state=DISABLED)
 
+
+
+### Funciones --------------------------------------------------------------------------------
+
+    ## Función Inicio -------------------------------------------------------------------
+    def show_car(self):
+        def show_car_action():
+            car_id = int(car_id_entry.get())
+            customtkinter.CTkLabel(
+                master=self.show_frame, 
+                text=self.__inventory.show_car(car_id),
+                text_font=("Roboto Medium", 12)
+            ).grid(column=1, row=15, padx=0, pady=15)
+
+        
+        # Crear frame
+        self.delete_frame = customtkinter.CTkFrame(master=self)                       
+        self.delete_frame.grid(row=0, column=1, sticky="nswe", padx=30, pady=30) 
+
+
+        # Create frame
+        self.show_frame = customtkinter.CTkFrame(master=self)                       
+        self.show_frame.grid(row=0, column=1, sticky="nswe", padx=30, pady=30)       
+        
+        # Display Autos en inventario
+        inventory_output = Text(
+            self.show_frame, 
+            font=App.TEXT, 
+            width=70, 
+            height=16, 
+            bg='#363636',
+            fg='white', 
+            spacing3=10
+        )
+        inventory_output.grid(row=5, column=1, columnspan=2, padx=0, pady=15)
+        inventory_output.insert(
+            0.0, 
+            Inventory.convert_to_literal_indexed(
+                self.__inventory.get_vehicles()
+            )
+        )
+        inventory_output.config(state=DISABLED)
+        
+        
+        # Crea Label
+        customtkinter.CTkLabel(
+            master=self.show_frame, 
+            text='Marca auto:', 
+            text_font=App.TEXT
+        ).grid(
+            row=0, 
+            column=0, 
+            padx=0, 
+            pady=15
+        )
+
+        # Crea ID entry
+        car_id_entry = customtkinter.CTkEntry(
+            master=self.show_frame, 
+            text_font=App.TEXT
+        )
+        car_id_entry.grid(
+            row=0, 
+            column=1, 
+            padx=0, 
+            pady=15               
+        )
+        
+        # Boton Agregar Auto
+        customtkinter.CTkButton(
+            master=self.show_car_frame, 
+            text="Filtro", 
+            command=show_car_action
+        ).grid(row=0, column=2, pady=15, padx=0)
+    
+    
     ## Función Agregar -------------------------------------------------------------------
     def add_car(self):
         def get_label(name):
@@ -123,9 +235,7 @@ class App(customtkinter.CTk):
             )
 
         def add_car_action():
-
-            # validate for here?
-
+            # Validación: Año y KM deben ser Nros
             if not headers["Año"]["entry"].get().isnumeric():
                 customtkinter.CTkLabel(
                     master=self.add_car_frame, 
@@ -141,7 +251,6 @@ class App(customtkinter.CTk):
                     text_font=("Roboto Medium", 12)
                 ).grid(column=1, row=15, padx=0, pady=15)
                 return
-
 
             car = Car(
                 headers["Marca"]["entry"].get(), 
@@ -161,7 +270,6 @@ class App(customtkinter.CTk):
 
 
         # Se crea el Frame
-
         self.add_car_frame = customtkinter.CTkFrame(master=self)                        
         self.add_car_frame.grid(
             row=0, 
@@ -171,7 +279,7 @@ class App(customtkinter.CTk):
             pady=30
         )      
          
-        # Create CTK Labels and Entries  
+        # Caja contenedora CTK & inputs  
         headers = { 'Marca': {}, 'Modelo': {}, 'Color': {}, 'Año': {}, 'km': {} }
         for row, key in enumerate(headers.keys()):
             headers[key]["label"] = get_label(key)
@@ -210,19 +318,17 @@ class App(customtkinter.CTk):
                 return
 
             car_id = int(car_id_entry.get())
-
             customtkinter.CTkLabel(
                 master=self.delete_frame, 
                 text=self.__inventory.delete_car(car_id),
                 text_font=("Roboto Medium", 12)
             ).grid(column=1, row=15, padx=0, pady=15)
 
-
-        # Create frame
+        # Crear frame
         self.delete_frame = customtkinter.CTkFrame(master=self)                       
         self.delete_frame.grid(row=0, column=1, sticky="nswe", padx=30, pady=30)       
         
-        # Display inventory output indexed
+        # Display Autos en inventario
         inventory_output = Text(
             self.delete_frame, 
             font=App.TEXT, 
@@ -241,7 +347,7 @@ class App(customtkinter.CTk):
         )
         inventory_output.config(state=DISABLED)
 
-        # Create label
+        # Crea Label
         customtkinter.CTkLabel(
             master=self.delete_frame, 
             text='ID auto:', 
@@ -253,7 +359,7 @@ class App(customtkinter.CTk):
             pady=15
         )
 
-        # Create ID entry
+        # Crea ID entry
         car_id_entry = customtkinter.CTkEntry(
             master=self.delete_frame, 
             text_font=App.TEXT
@@ -265,7 +371,7 @@ class App(customtkinter.CTk):
             pady=15               
         )
 
-        # Button for remove car
+        # Boton Borrar Auto
         customtkinter.CTkButton(
             master=self.delete_frame, 
             text="Borrar Auto", 
@@ -275,26 +381,110 @@ class App(customtkinter.CTk):
     ## Función Editar ---------------------------------------------------------------------
     def edit_car(self):
 
-        # Create frame
+        def edit_car_action():
 
+            brand_id = int((car_drop_menu.get()).split(". ")[0])
+
+            if feature_drop_menu.get() == "Marca":
+                cars[brand_id].brand = value_input.get()
+
+            elif feature_drop_menu.get() == "Modelo":
+                cars[brand_id].model = value_input.get()
+
+            elif feature_drop_menu.get() == "Color":
+                cars[brand_id].color = value_input.get()           
+
+            elif feature_drop_menu.get() == "Año":
+                cars[brand_id].year = value_input.get()
+
+            customtkinter.CTkLabel(
+                master=self.edit_frame, 
+                text="Auto modificado",
+                text_font=("Roboto Medium", 12)
+            ).grid(column=1, row=15, padx=0, pady=15)
+
+
+        # Crea Frame
         self.edit_frame = customtkinter.CTkFrame(master=self)                       
-        self.edit_frame.grid(row=0, column=1, sticky="nswe", padx=30, pady=30)  
+        self.edit_frame.grid(
+            row=0, 
+            column=1, 
+            sticky="nswe", 
+            padx=30, 
+            pady=30
+        )       
+        # Get cars
+        cars = self.__inventory.get_vehicles()
+        if not cars:
+            customtkinter.CTkLabel(
+                master=self.edit_frame, 
+                text="No hay autos",
+                text_font=("Roboto Medium", 12)
+            ).grid(column=1, row=15, padx=0, pady=15)
+            return
+
+        # Seleccionar Auto a Editar
+        car_drop_menu = (
+            customtkinter.CTkOptionMenu(
+                master=self.edit_frame, 
+                values=[ 
+                    f"{index}. {car.brand}" 
+                    for index, car in enumerate(cars) 
+                ], 
+                text_font=App.TEXT
+            )
+        )
+        car_drop_menu.grid(
+            row=1, 
+            column=1, 
+            padx=0, 
+            pady=15
+        )
+
+        # Elección del feature a editar
+        feature_drop_menu = (
+            customtkinter.CTkOptionMenu(
+                master=self.edit_frame, 
+                values=['Marca', 'Modelo', 'Color', 'Año'], 
+                text_font=App.TEXT
+            )
+        )
+        feature_drop_menu.grid(
+            row=2,
+            column=1, 
+            padx=0, 
+            pady=15
+        )
+           
+        # Input nuevo valor
+        value_input = (
+            customtkinter.CTkEntry(
+                master=self.edit_frame, 
+                text_font=App.TEXT, 
+                placeholder_text="Valor"
+            )
+        )
+        value_input.grid(row=3, column=1, padx=0, pady=15)  
+
+        # Boton para editar
+        self.edit_car_button = customtkinter.CTkButton(
+            master=self.edit_frame, 
+            text="Editar", 
+            command=edit_car_action
+        )
+        self.edit_car_button.grid(row=5, column=1, pady=15, padx=0)
 
     ## Función Reporte ---------------------------------------------------------------------
     def report(self):
-
-        # Create frame
-
+        # Frame
         self.report_frame = customtkinter.CTkFrame(master=self)                       
         self.report_frame.grid(row=0, column=1, sticky="nswe", padx=30, pady=30)       
         
-        # Get vehicles
-
+        # Llamamos a la función get_vehicles
         cars = self.__inventory.get_vehicles()
         total_cars = len(cars)
 
-        # Display inventory output 
-
+        # Muestra Datos 
         inventory_output = Text(
             self.report_frame, 
             font=App.TEXT, 
@@ -321,7 +511,7 @@ class App(customtkinter.CTk):
 
     ## Función Cerrar ---------------------------------------------------------------------
     def on_closing(self, event=0):
-    
+        #El programa guardara los datos al cerrarse la ventana.
         car_list = Inventory.convert_to_save_literal(
             self.__inventory.get_vehicles()
         )
