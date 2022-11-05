@@ -25,7 +25,6 @@ class Car:
     def model(self, model):
         self.__model = model
 
-
     @property
     def color(self):
         return self.__color
@@ -33,14 +32,12 @@ class Car:
     def color(self, color):
         self.__color = color
 
-
     @property
     def year(self):
         return self.__year
     @year.setter
     def year(self, year):
         self.__year = year
-
 
     @property
     def km(self):
