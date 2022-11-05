@@ -4,7 +4,7 @@ class Inventory:
 
     def add_car(self, car):
         self.__vehicles.append(car)
-        return "Car added"
+        return "Auto Agregado"
 
     def delete_car(self, car_id):
         try:
@@ -16,6 +16,13 @@ class Inventory:
 
     def get_vehicles(self):
         return self.__vehicles
+
+    def filter_vehicles(self, filter):
+        lista = []
+        for v in self.__vehicles:
+            if filter in v.brand:
+                lista.append(v)
+        return lista
 
     @staticmethod
     def convert_to_save_literal(vehicles):

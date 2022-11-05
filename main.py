@@ -62,7 +62,7 @@ class App(customtkinter.CTk):
             master=self.frame_left, 
             text="Inicio", 
             text_font=App.TEXT, 
-            command=self.show_car #show car OJOOOOOOOOOOOOOOOOOOOOOOOO
+            command=self.show_car 
         )
         self.show_car_button.grid(row=2, column=0, pady=10, padx=20)
         
@@ -143,10 +143,7 @@ class App(customtkinter.CTk):
         )
         inventory_output.config(state=DISABLED)
 
-
-
 ### Funciones --------------------------------------------------------------------------------
-
     ## Función Inicio -------------------------------------------------------------------
     def show_car(self):
         def show_car_action():
@@ -156,12 +153,10 @@ class App(customtkinter.CTk):
                 text=self.__inventory.show_car(car_id),
                 text_font=("Roboto Medium", 12)
             ).grid(column=1, row=15, padx=0, pady=15)
-
         
         # Crear frame
         self.delete_frame = customtkinter.CTkFrame(master=self)                       
         self.delete_frame.grid(row=0, column=1, sticky="nswe", padx=30, pady=30) 
-
 
         # Create frame
         self.show_frame = customtkinter.CTkFrame(master=self)                       
@@ -198,7 +193,6 @@ class App(customtkinter.CTk):
             padx=0, 
             pady=15
         )
-
         # Crea ID entry
         car_id_entry = customtkinter.CTkEntry(
             master=self.show_frame, 
@@ -217,7 +211,6 @@ class App(customtkinter.CTk):
             text="Filtro", 
             command=show_car_action
         ).grid(row=0, column=2, pady=15, padx=0)
-    
     
     ## Función Agregar -------------------------------------------------------------------
     def add_car(self):
