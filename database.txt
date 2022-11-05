@@ -1,0 +1,4 @@
+bmw	fast	black	2022	23000	2022-11-01
+ford	illuminati	yellow	1980	10	2022-11-01
+dsad	dasd	dasd	2222	321	2022-11-01
+dasd	asd	dasd	312	321	2022-11-01
